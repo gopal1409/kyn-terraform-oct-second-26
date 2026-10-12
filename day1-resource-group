@@ -1,0 +1,26 @@
+###in your desktop inside rd you need to create a folder tf-project
+  #open visual studio code click on file select desktop and select the tf-project folder
+  ####then click on file again and Enable autosave option
+  ###lets first create provider.tf file copy from line 5 till 17
+  terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=5.0.0"
+    }
+  }
+}
+
+# Configure the Microsoft Azure Provider
+provider "azurerm" {
+  features {}
+}
+
+##lets create our first resource group copy from line 21 till 24
+
+resource "azurerm_resource_group" "my_rg" {
+  name     = "gopal-rg"
+  location = "eastus"
+}
+#####after thsi we need to open terminal once terminal open 
+  terraform init
