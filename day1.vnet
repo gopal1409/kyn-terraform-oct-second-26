@@ -1,0 +1,14 @@
+##create another file vnet.tf change my name to your name copy line 2 till 7
+resource "azurerm_virtual_network" "vnet" {
+  name                = "gopal-network"
+  location            =  azurerm_resource_group.my_rg.location
+  resource_group_name =  azurerm_resource_group.my_rg.name
+  address_space       = ["10.0.0.0/16"]
+}
+
+#then do terraform apply inside your resource group you will see the vnet. 
+
+  ##then do terraform destroy 
+    ##inside vnet.tf file in 
+    resource_group_name =  azurerm_resource_group.my_rg.name ##change my_rg to my_rg1
+    #then do terraform apply check the error which says refrence mismatch again change my_rg1 to my_rg and do terraform apply it will create the resources
