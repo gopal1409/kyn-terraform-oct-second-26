@@ -1,0 +1,12 @@
+##go inside the local.tf file at the end before curl braces ends copy line 2 till 6
+   project_tags = { #project tag is the name
+        project     = var.project_name #sap
+        environment = var.environment #dev
+        Owner       = "kyn"
+    }
+
+##go inside the resource.tf file paste it at the end before the curl braces
+   tags = local.project_tags
+
+  ##go inside the vnet.tf file paste it at the end before the curl braces
+   tags = local.project_tags
