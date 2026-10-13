@@ -1,0 +1,16 @@
+#create a new file subnet.tf copy from line 2 till 9
+  resource "azurerm_subnet" "web_subnet" {
+  name                 = "web-subnet"
+  resource_group_name  = azurerm_resource_group.example.name
+  virtual_network_name = azurerm_virtual_network.example.name
+  address_prefixes     = ["10.0.1.0/24"]
+
+  
+}
+
+##open the terminal paste all the 4 env service principal vaules 
+  exercise
+  1. terraform apply 
+  2. check in subnet there are two missing refrence one is it need to be mapped to your resource group 
+  3. it need to be mapped to your vnet which we have created earlier
+  4. resolve both the refrence do terraform apply see that the subnet is created or not
