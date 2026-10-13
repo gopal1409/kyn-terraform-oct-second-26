@@ -1,0 +1,76 @@
+#first do terraform destroy
+#create a new file generic-varaibles.tf change my name to your name copy from line 3 till 45
+  variable "resource_group_name" {
+  description = "The name of the resource group"
+  type        = string
+  default     = "gopal_rg"
+}
+
+variable "location" {
+  description = "location of the region"
+  type = string
+  default = "eastus"
+}
+
+variable "vnet_name" {
+  description = "The name of the virtual network"
+  type        = string
+  default     = "gopal-network"
+}
+variable "vnet_address_space" {
+  description = "The address space of the virtual network"
+  type        = list(string)
+  default     = ["10.0.0.0/16"]
+}
+variable "subnet_name" {
+  description = "The name of the subnet"
+  type        = string
+  default     = "web-subnet"
+}
+variable "subnet_address_prefixes" {
+  description = "The address prefixes of the subnet"
+  type        = list(string)
+  default     = ["10.0.1.0/24"]
+}
+variable "project_name" {
+  description = "The name of the project"
+  type        = string
+  default     = "sap"
+}
+
+variable "environment" {
+  description = "The environment of the project"
+  type        = string
+  default     = "dev"
+}
+
+#inside the resource.tf delete everything and add this copy from line 48 till 52
+  resource "azurerm_resource_group" "my_rg" {
+  name      = "${local.name_prefix}-${var.resource_group_name}"
+  #sap-dev-gopal-rg
+  location = var.location
+}
+
+#########inside vnet.tf delete everything copy from 56 till 61
+ 
+resource "azurerm_virtual_network" "vnet" {
+  name                = "${local.name_prefix}-${var.vnet_name}"
+  location            =  azurerm_resource_group.my_rg.location
+  resource_group_name =  azurerm_resource_group.my_rg.name
+  address_space       = var.vnet_address_space
+}
+
+##inside subnet.tf delete everything copy from line 64 till 71
+    resource "azurerm_subnet" "web_subnet" {
+  name                 = "${local.name_prefix}-${var.subnet_name}"
+  resource_group_name  = azurerm_resource_group.example.name
+  virtual_network_name = azurerm_virtual_network.example.name
+  address_prefixes     = var.subnet_address_prefixes
+
+  
+}
+
+##after this 
+  do terraform apply check the name of the resource group it should start with 
+  ##sap-dev-nameoftherg
+  vnet name should start with prefix sap-dev also subnet
