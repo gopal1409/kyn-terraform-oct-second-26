@@ -28,7 +28,7 @@
   sku                 = "Standard" #publicip ip will be spread across regions and will be highly available across zones
   #basic: the public ip created in one single az 
   zones = [each.value.zone]
-  tags  = merge(local.project_tag, { "Instance" = each.key })
+  tags  = merge(local.project_tags, { "Instance" = each.key })
 }
 
 #lets modify the nic.tf file delete everything copy from line 34 till 49
@@ -46,7 +46,7 @@
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.web_public_ip[each.key].id
   }
-   tags  = merge(local.project_tag, { "Instance" = each.key })
+   tags  = merge(local.project_tags, { "Instance" = each.key })
 }
 
 #go inside winvm.tf at the starting we will put /*  and end */
@@ -82,7 +82,7 @@
     version   = "latest"
   }
   custom_data = filebase64("${path.module}/app.sh") #this will run the cloud-init script which is present in the cloud-init folder in the same directory as this terraform file.
-   tags  = merge(local.project_tag, { "Instance" = each.key })
+   tags  = merge(local.project_tags, { "Instance" = each.key })
 }
 
 ###once done 
