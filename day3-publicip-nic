@@ -7,7 +7,7 @@
   sku                 = "Standard" #publicip ip will be spread across regions and will be highly available across zones
   #basic: the public ip created in one single az 
 
-  tags = local.project_tag
+  tags = local.project_tags
 }
 
 ##create a nic card nic.tf copy from line 14 till 26
