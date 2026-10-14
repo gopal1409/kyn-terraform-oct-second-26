@@ -36,7 +36,7 @@ output "public_ip_address" {
     exercise2: copy the publci ip from azure portal or you can see in terraform terminal paste the same in browser press enter then remove https you will see the test page
       exercise3: lets login to the linux machine using ssh
       cd .\ssh-keys\                                                                                                       
-      ssh -i .\terraform-azure.pem azureuser@20.127.34.102      
+      ssh -i .\terraform-azure.pem azureuser@replace it with your publicip
       #once login run the curl request you will see the test page
       curl localhost
       ###you can exit the terminal 
