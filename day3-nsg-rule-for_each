@@ -1,0 +1,31 @@
+#go inside the nsg.tf file at the end paste this code from line number 2 till 25
+  locals {
+  web_nsg_rule ={ #named
+    "110" : "22", #again the name we have expression in key value format priority and port number
+    "120" : "80",
+    "130" : "443",
+ 
+  }
+}
+#lets create the nsg rules using for each loop
+resource "azurerm_network_security_rule" "web_nsg_rule" {
+  #inside the resource block we will put for each loop to create the rules dynamically
+  for_each = local.web_nsg_rule
+  name                        = "Rule_port_${each.value}" #Rule_port_22
+  priority                    = each.key #110
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = each.value #22
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.my_rg.name
+  network_security_group_name = azurerm_network_security_group.web_nsg.name
+}
+
+###then do terraform apply before you do terraform apply do not forget to paster the 4 service principal values inside the terminal
+  #go to your resource group click on nsg you will see port 22 80 and 443 is open
+  exercise
+  1. add port 8080 with a priority of 140 in local block and do terraform apply you can see in azure portal 8080 is added
+  2. remove the port 8080 from the local block again do terraform apply you will see port 8080 is deleted
