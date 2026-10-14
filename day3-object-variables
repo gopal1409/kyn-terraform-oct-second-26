@@ -1,0 +1,90 @@
+#first do terraform destroy
+#lets create a file called as instance.tf copy from line 2 till 18
+  variable "instance" { #studentdb
+  description = "configuration for multiple azure virtual machine"
+  type = map(object({
+    size = string #name
+    zone = string #address 
+  }))
+  default = {
+    "vm1" = {
+      size = "Standard_F2"
+      zone = "1"
+    }
+    "vm2" = {
+      size = "Standard_B1s"
+      zone = "2"
+    }
+  }
+}
+##when two instance are create we need to create two public ip and two nic car two vm
+  #inside publicip.tf file delete everything add this copy from line 21 till 31
+  resource "azurerm_public_ip" "web_public_ip" {
+  for_each            = var.instance
+  name                = "${local.name_prefix}-${each.key}-public-ip"
+  resource_group_name = azurerm_resource_group.my_rg.name
+  location            = azurerm_resource_group.my_rg.location
+  allocation_method   = "Static"
+  sku                 = "Standard" #publicip ip will be spread across regions and will be highly available across zones
+  #basic: the public ip created in one single az 
+  zones = [each.value.zone]
+  tags  = merge(local.project_tag, { "Instance" = each.key })
+}
+
+#lets modify the nic.tf file delete everything copy from line 34 till 49
+  resource "azurerm_network_interface" "web_nic" {
+    for_each            = var.instance
+
+  name                = "${local.name_prefix}-${each.key}-nic"
+  resource_group_name = azurerm_resource_group.my_rg.name
+  location            = azurerm_resource_group.my_rg.location
+
+
+  ip_configuration { #this nic card will get an public and private ip
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.web_subnet.id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.web_public_ip[each.key].id
+  }
+   tags  = merge(local.project_tag, { "Instance" = each.key })
+}
+
+#go inside winvm.tf at the starting we will put /*  and end */
+ 
+
+  ##go inside vm.tf delete everything and add this copy from line 55 till 85
+ resource "azurerm_linux_virtual_machine" "web_vm" {
+    for_each            = var.instance
+  name                = "${local.name_prefix}-${each.key}-linuxvm"
+  resource_group_name = azurerm_resource_group.my_rg.name
+  location            = azurerm_resource_group.my_rg.location
+  size                = each.value.size
+  admin_username      = "azureuser"
+  network_interface_ids = [
+    azurerm_network_interface.web_nic[each.key].id,
+  ]
+
+  admin_ssh_key {
+    username   = "azureuser"
+    public_key = file("${path.module}/ssh-keys/terraform-azure.pem.pub")
+    #path.module is an meta argument in terraform which will look for your file in current directory where your terraform file is present. In this case it will look for the ssh key in the ssh-keys folder which is present in the same directory as this terraform file.
+  }
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts"
+    version   = "latest"
+  }
+  custom_data = filebase64("${path.module}/app.sh") #this will run the cloud-init script which is present in the cloud-init folder in the same directory as this terraform file.
+   tags  = merge(local.project_tag, { "Instance" = each.key })
+}
+
+###once done 
+  #do terraform apply 
+  #then go to azure portal inside your rsource group check both the instance size 
