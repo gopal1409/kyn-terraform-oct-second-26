@@ -88,3 +88,23 @@
 ###once done 
   #do terraform apply 
   #then go to azure portal inside your rsource group check both the instance size 
+#at the end of the vm.tf file add this output block then do terraform apply this will show two instance details
+output "vm_details" {
+  value = {
+    for name, vm in azurerm_linux_virtual_machine.web_vm : name => {
+      public_ip  = azurerm_public_ip.web_public_ip[name].ip_address
+      private_ip = azurerm_network_interface.web_nic[name].private_ip_address
+      nic_id     = azurerm_network_interface.web_nic[name].id
+      vm = vm.size
+      vm_id = vm.id
+      vm_name = vm.name
+    }
+  }
+
+#exercise current we have two instance we need to add another instance go to instance.tf file 
+"vm3" = {
+      size = "Standard_B1s"
+      availability_zone = "2"
+        
+    }
+
