@@ -104,7 +104,7 @@ output "vm_details" {
 #exercise current we have two instance we need to add another instance go to instance.tf file 
 "vm3" = {
       size = "Standard_B1s"
-      availability_zone = "2"
+    zone = "2"
         
     }
 
