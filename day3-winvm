@@ -1,0 +1,35 @@
+#first lets destroy all the resource 
+  terraform destroy
+  ##after the destroy complete 
+  #inside vm.tf file starting of the line put /*   and end of the line put */ this will comment the whole vm.tf file
+  ##next create a new file winvm.tf copy from line 6 till 28
+  resource "azurerm_windows_virtual_machine" "winvm" {
+  name                = "${local.name_prefix}-winvm"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  size                = "Standard F2"
+  admin_username      = "adminuser"
+  admin_password      = "P@$$w0rd1234!"
+  network_interface_ids = [
+    azurerm_network_interface.example.id,
+  ]
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2016-Datacenter"
+    version   = "latest"
+  }
+}
+
+##exercise 
+  1. on line 8 and 9 change the refrence to proper resource group and location
+  2. on line 14 change the network card refrence to your nic card refrence
+  3. inside nsg.tf add a new rule in local block 150 is the priority and port number should be 3389
+  4. do terraform apply
+  5. then do RDP to the windows instance using public ip
