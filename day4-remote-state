@@ -1,0 +1,20 @@
+##run terraform destroy
+  ##we need to delete some more files
+  .terraform folder right click delete it 
+  .terraform.lock.hcl
+  terraform.tfstate
+  terraform.tfstate.backup
+
+  ###create a new file backend.tf copy paste from line 9 till 14
+  backend "azurerm" {
+  resource_group_name  = "rg-terraform" #replace this with your storage account resource group name
+  storage_account_name = "stterraform" #replace this with your storage account name
+  container_name       = "tfstate"
+  key                  = "terraform.tfstate"
+}
+
+#after this 
+  terraform init
+  terraform validate
+  terraform plan
+  terraform apply
