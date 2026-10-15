@@ -21,3 +21,12 @@ git status
 ls -la
   #never delte your .git folder you will loose all the versioing
 ls -la .git
+#lets do our first commit
+#to move a file to commit area git add
+git add calcy.py
+git status
+#to commit we need to provide a proper message
+git commit -m "started with calcy application"
+#git log will show your commit
+git log
+
