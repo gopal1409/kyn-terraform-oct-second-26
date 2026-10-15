@@ -1,0 +1,5 @@
+#first lets do terraform destroy
+  ##then go to publicip.tf file at the starting put /*   and end */
+  ###then inside nic.tf you will find publicip_ip in from of the public ip put an #
+  #then inside vm.tf file in the output block you will find publicip put a an # in front of it
+  #finally do terraform apply
