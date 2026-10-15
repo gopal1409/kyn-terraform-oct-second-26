@@ -1,0 +1,49 @@
+##lets create a file .gitignore inside the file copy line 2 till 4
+.terraform
+terraform.tfstate
+terraform.tfstate.back
+#####inside provide.tf file delete everthing and add this from line 6 till 38
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=5.0.0" #important for production environment
+    }
+  }
+}
+
+# Configure the Microsoft Azure Provider
+provider "azurerm" {
+  features {}
+   subscription_id = var.subscription_id
+  client_id = var.client_id
+  client_secret = var.client_secret
+  tenant_id = var.tenant_id
+}
+
+variable "client_id" {
+  type = string
+}
+ 
+variable "client_secret" {
+  type = string
+}
+ 
+variable "subscription_id" {
+  type = string
+}
+ 
+variable "tenant_id" {
+  type = string
+}
+
+#after this 
+  rm .git
+  git init
+  git add .
+  git commit -m "terraform project"
+  ###then go to github.com
+  ##click on the + icon new repo create a repo give the name as kyn-cloud-integration-oct-second26
+  #then create the repo 
+  #once repo created click on ssh
+  #then copy all the three command from push an existing repo paste it in visual studio terminal and press enter this will upload the code in your new repo
