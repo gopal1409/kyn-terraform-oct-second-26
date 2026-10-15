@@ -29,4 +29,13 @@ git status
 git commit -m "started with calcy application"
 #git log will show your commit
 git log
+##lets do another commit 
+echo "we are adding subtract function in calcy project" >> calcy.py
+cat calcy.py
+#git status will show there is modification in the file
+git status
+ git add calcy.py
+ git commit -m "subtract function added"
+# finally git log will show that there is second commit 
+git log
 
