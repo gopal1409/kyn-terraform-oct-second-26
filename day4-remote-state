@@ -10,7 +10,7 @@
   resource_group_name  = "rg-terraform" #replace this with your storage account resource group name
   storage_account_name = "stterraform" #replace this with your storage account name
   container_name       = "tfstate"
-  key                  = "terraform.tfstate"
+  key                  = "projectx.tfstate"
 }
 
 #after this 
