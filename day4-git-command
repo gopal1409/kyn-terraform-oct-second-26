@@ -38,4 +38,16 @@ git status
  git commit -m "subtract function added"
 # finally git log will show that there is second commit 
 git log
+#we will add one more line and push the same to remote repo
+536  echo "started with multiple function" >> calcy.py
+#git styatus will show that the calcy.py has been modified
+  537  git status
+#what are the modification you can see it using git diff command
+  538  git diff
+#add it and commit it 
+  540  git add calcy.py
+  541  git commit -m "multiply function added"
+##finally push the changes to remote repo
+  542  git push origin main
+#then refresh your github page you will see second line in calcy.py
 
