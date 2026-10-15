@@ -31,3 +31,33 @@ resource "azurerm_lb_backend_address_pool" "weblb_backend_pool" {
 #probes
 #lb rules
 #attach those nic card with the backend pool
+##inside lb.tf at the end copy from line 35 till 60
+resource "azurerm_lb_probe" "weblb_probe" {
+  loadbalancer_id = azurerm_lb.web_lb.id
+  name                = "${local.name_prefix}-lb-probe"
+  protocol            = "Tcp"
+  port                = 80
+  interval_in_seconds = 30 #every 30 second it will ping your vm on port 80 
+  number_of_probes    = 2 #two times it will ping 1 min if it dont get response it will mark the vm as unhealthy and will not send traffic to that vm
+}
+#lb rules
+resource "azurerm_lb_rule" "weblb_rule" {
+  loadbalancer_id = azurerm_lb.web_lb.id
+  name                = "${local.name_prefix}-lb-rule"
+  protocol            = "Tcp"
+  frontend_port       = 80 #lb port
+  backend_port        = 80 #vm port if inside my vm i am running a tomcat server
+  frontend_ip_configuration_name = azurerm_lb.web_lb.frontend_ip_configuration[0].name
+  backend_address_pool_ids        = [azurerm_lb_backend_address_pool.weblb_backend_pool.id]
+  probe_id                       = azurerm_lb_probe.weblb_probe.id
+}
+#attach those nic card with the backend pool
+resource "azurerm_network_interface_backend_address_pool_association" "nic_backend_pool_association" {
+  for_each            = var.instance
+  network_interface_id    = azurerm_network_interface.web_nic[each.key].id
+  ip_configuration_name   = azurerm_network_interface.web_nic[each.key].ip_configuration[0].name
+  backend_address_pool_id = azurerm_lb_backend_address_pool.weblb_backend_pool.id
+}
+####then do terraform apply
+1. once apply complete check the backend pool contains your instance nic card
+2. copy the lb frontend ip address and paste it in the browser withoght ssl it will show your first instance private ip after 30 second refresh it it will show second sytstem private ip
