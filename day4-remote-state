@@ -6,11 +6,13 @@
   terraform.tfstate.backup
 
   ###create a new file backend.hcl copy paste from line 9 till 14
+terraform {
   backend "azurerm" {
-  resource_group_name  = "rg-terraform" #replace this with your storage account resource group name
-  storage_account_name = "stterraform" #replace this with your storage account name
+  resource_group_name  = "gopal-storage-acc" #replace this with your storage account resource group name
+  storage_account_name = "gopalstorageacc" #replace this with your storage account name
   container_name       = "tfstate"
-  key                  = "projectx.tfstate"
+  key                  = "terraform.tfstate"
+}
 }
 
 #after this 
