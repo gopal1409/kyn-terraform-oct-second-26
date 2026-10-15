@@ -1,0 +1,23 @@
+##open gitbash in rdp
+  #lets create first global variables 
+  git config --global user.name "gopal"
+  git config --global user.email "gopal1409@gmail.com"
+  #we create a folder 
+ mkdir projectx
+cd projectx
+  #inside the projectx directory we will create some files
+touch DS_Store
+touch auth
+touch secret
+touch calcy.py
+echo "we started with calcy app"
+ls
+  #first time when we do git status it will show me this is not an git repo
+git status
+  #git init is the command which will intialized this git repo
+git init
+  #now if you do git status git has start tracking all the files
+git status
+ls -la
+  #never delte your .git folder you will loose all the versioing
+ls -la .git
