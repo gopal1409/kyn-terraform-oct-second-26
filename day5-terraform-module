@@ -1,0 +1,31 @@
+#in your remote desktop create a new folder called tf-module
+  ###open visual studio code click on file select folder tf-module
+  #inside this folder create a folder called as modules
+  #inside module folder create three folder networking compute lb
+  #inside every folder you need to create three file main.tf variables.tf output.tf
+   tf-modules/
+│
+├── modules/
+│   │
+│   ├── networking/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   │
+
+│   ├── compute/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   │
+│   └── alb/
+│       ├── main.tf
+│       ├── variables.tf
+│       └── outputs.tf
+
+  #once you create this directory strucutre open terminal in visual studio code
+  git init
+  git add .
+  git commit -m "terraform module"
+  ##then in your personal github click on the plus icon create a new repo give the name as terraform-module-oct26
+  ##get the ssh based push command and paste in the terminal 
