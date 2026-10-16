@@ -1,0 +1,19 @@
+#this will show the command related to workspace
+terraform workspace   
+  #if you want to list all your workspace
+terraform workspace list       
+  #new will createa a new workspace called as dev
+terraform workspace new dev                                                                                          
+ terraform workspace list      
+  #inside the workspace dev we are passing our custom dev.tfvars file to create single instance
+terraform apply --var-file=dev.tfvars       
+  #create a new workspace test
+  terraform workspace new test                                                                                         
+   terraform workspace list   
+  #apply the test workspace once applied you will see two instance with different cidr block
+   terraform apply --var-file=test.tfvars
+
+  #####################exercise
+  1. go to the resource group in azure portal you will see with your name there are two workspace dev and test
+  2. go inside the dev workspace you will see only 1 instance
+  3. go inside the test workspace you will see only 2 instance
