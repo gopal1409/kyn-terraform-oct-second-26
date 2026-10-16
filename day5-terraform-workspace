@@ -17,3 +17,14 @@ terraform apply --var-file=dev.tfvars
   1. go to the resource group in azure portal you will see with your name there are two workspace dev and test
   2. go inside the dev workspace you will see only 1 instance
   3. go inside the test workspace you will see only 2 instance
+#lets destroy both the env
+ 32 terraform workspace list   
+#we are in test workspace we will destroy it 
+  33 terraform destroy --auto-approve      
+#once destroy check in azure portal test is destroyed or not
+  34 terraform workspace list       
+#lets go to dev workspace and destory it also
+  35 terraform workspace select dev                                                                                       
+  36 terraform workspace list                                                                                             
+  37 terraform destroy --auto-approve   
+#finally once destroy we can check test environment is destroyed
