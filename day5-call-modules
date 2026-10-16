@@ -1,3 +1,7 @@
+##on your desktop create a new folder tf-call-module
+#open another visual studio code click on file open folder desktop select tf-call-module
+#inside that folder create all this files
+#dev.tfvars copy from line 5 till 28 wherever you see my name change it to your name
 project_name    = "sap"
 environment     = "dev"
 resource_group_name = "gopal_rg"
@@ -23,6 +27,7 @@ instance = {
   }
 }
 
+##output.tf copy from line 32 till 55
 
 output "resource_group_name" {
   description = "Resource group created by the networking module."
@@ -48,6 +53,7 @@ output "vm_details" {
   description = "Virtual machine details, keyed by instance map key."
   value       = module.compute.vm_details
 }
+#create a file varaibles.tf copy from line 57 till 145 where ever you see my name change it to your name
 variable "project_name" {
   description = "Project name used as a resource name prefix."
   type        = string
@@ -132,3 +138,54 @@ variable "lb_backend_port" {
   type        = number
   default     = 80
 }
+
+#create a file provider.tf copy from line 143 till 156
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=5.0.0" #important for production environment
+    }
+  }
+}
+
+# Configure the Microsoft Azure Provider
+provider "azurerm" {
+  features {}
+
+}
+
+#create a file main.tf copy from line 159 till 183
+locals {
+
+  name_prefix = "${var.project_name}-${var.environment}"
+  #if i call name-prefix it will give me sap-dev
+  #you can use the same for named expression
+  project_tag = {
+    Project     = var.project_name
+    Environment = var.environment
+    ManagedBy   = "Kyn-dev-team01"
+  }
+}
+
+module "networking" {
+  source = "github.com/gopal1409/kyn-terraform-module-oct26/modules/networking"
+
+  name_prefix             = local.name_prefix
+  resource_group_name     = var.resource_group_name
+  location                = var.location
+  vnet_name               = var.vnet_name
+  vnet_address_space      = var.vnet_address_space
+  subnet_name             = var.subnet_name
+  subnet_address_prefixes = var.subnet_address_prefixes
+  ssh_source_address_prefix = var.ssh_source_address_prefix
+  tags = local.project_tag
+}
+
+#after this open the terminal do copy paste the env sp
+terraform init
+###once you do terraform init it will download the skeleton from github inside .terraform folder
+#lets do the planning it works or not 
+terraform plan --var-file=dev.tfvars
+###lets apply it 
+terraform apply --var-file=dev.tfvars
