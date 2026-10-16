@@ -1,0 +1,82 @@
+#first in the terminal put env value of service principal do terraform destroy
+  ###go inside the provider.tf file delete everything and this from line 3 till 16
+  terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=5.0.0" #important for production environment
+    }
+  }
+}
+
+# Configure the Microsoft Azure Provider
+provider "azurerm" {
+  features {}
+
+}
+
+##lets create a dev.tfvars file copy from line 19 till 32 also change my name to your name in resource group and networking
+  resource_group_name     = "gopal_rg"
+location                = "eastus"
+vnet_name               = "gopal-network"
+vnet_address_space      = ["10.0.0.0/16"]
+subnet_name             = "web-subnet"
+subnet_address_prefixes = ["10.0.1.0/24"]
+project_name            = "sap"
+environment             = "dev"
+instance = {
+  web1 = {
+    size = "Standard_B1s"
+    zone    = "1"
+  }
+}
+
+#lets create test.tfvars copy from line 35 till 52 also change my name to your name in resource group and networking
+  resource_group_name     = "gopal_rg"
+location                = "eastus"
+vnet_name               = "gopal-network"
+vnet_address_space      = ["172.0.0.0/16"]
+subnet_name             = "web-subnet"
+subnet_address_prefixes = ["172.0.1.0/24"]
+project_name            = "sap"
+environment             = "test"
+instance = {
+  web1 = {
+    size = "Standard_B1s"
+    zone    = "1"
+  }
+  web2 = {
+    size = "Standard_F2"
+    zone    = "2"
+  }
+}
+
+#lets create the prod.tfvars copy from line 55 till 76
+  resource_group_name     = "gopal_rg"
+location                = "eastus"
+vnet_name               = "gopal-network"
+vnet_address_space      = ["10.0.0.0/16"]
+subnet_name             = "web-subnet"
+subnet_address_prefixes = ["10.0.1.0/24"]
+project_name            = "sap"
+environment             = "prod"
+instance = {
+  web1 = {
+    size = "Standard_F2"
+    zone    = "1"
+  }
+  web2 = {
+    size = "Standard_F2"
+    zone    = "2"
+  }
+  web3 = {
+    size = "Standard_F2"
+    zone    = "3"
+  }
+}
+
+###exercise
+  1. do terraform plan this will plan your infra with default value in the planner you will see the default value create two instance of size b1 and f2
+  2. terraforom plan --var-file=dev.tfvars check it is createing one instance of size b1
+  3. terraforom plan --var-file=test.tfvars check it is createing two instance of size b1 and cidr block is 172 series
+  4. terraforom plan --var-file=prod.tfvars check it is createing three instance of size b1 and cidr block is 172 series
