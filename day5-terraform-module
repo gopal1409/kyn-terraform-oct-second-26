@@ -30,6 +30,7 @@
   ##then in your personal github click on the plus icon create a new repo give the name as terraform-module-oct26
   ##get the ssh based push command and paste in the terminal 
 #lets create the networking module
+#inside network/main.tf file copy from line 34 till 101
 resource "azurerm_resource_group" "this" {
   name     = "${var.name_prefix}-${var.resource_group_name}"
   location = var.location
@@ -99,7 +100,7 @@ resource "azurerm_network_security_rule" "inbound" {
   network_security_group_name = azurerm_network_security_group.this.name
 }
 
-varaibles..tf
+#inside network/varaibles.tf copy from line 104 till 147
 variable "name_prefix" {
   type        = string
   description = "Prefix used for resource names."
@@ -145,7 +146,7 @@ variable "tags" {
   description = "Tags to apply to resources."
 }
 
-output.tf
+inside networking/output.tf copy from line 150 till 173
 output "resource_group_name" {
   description = "Name of the resource group."
   value       = azurerm_resource_group.this.name
@@ -170,3 +171,8 @@ output "network_security_group_id" {
   description = "ID of the network security group."
   value       = azurerm_network_security_group.this.id
 }
+
+#after this 
+git add .
+git commit -m "terraform networking module code"
+git push origin main
